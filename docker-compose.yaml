@@ -1,14 +1,19 @@
+# Docker Compose for BarCodes
+version: '3.1'
+
 services:
-  barcode:
-    build: .
-    image: go-qr-barcode:local
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:${WORKING_PORT:-9092}:${WORKING_PORT:-9092}"
+  java-barcodes-service:
+    image: tdchien1982/go:barcodes-1.0
+    container_name: barcodes-server
+    labels:
+      name: "barcodes-server"
+    restart: always
     environment:
-      WORKING_PORT: ${WORKING_PORT:-9092}
-      TYPE_CODE: ${TYPE_CODE:-QR_CODE}
-      IMAGE_SIZE: ${IMAGE_SIZE:-200}
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
+      WORKING_PORT: 9092
+    ports:
+      - "9092:9092"
+    networks:
+      - common-network
+networks:
+  common-network:
+    external: true
