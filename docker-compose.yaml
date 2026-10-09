@@ -1,0 +1,14 @@
+services:
+  barcode:
+    build: .
+    image: go-qr-barcode:local
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${WORKING_PORT:-9092}:${WORKING_PORT:-9092}"
+    environment:
+      WORKING_PORT: ${WORKING_PORT:-9092}
+      TYPE_CODE: ${TYPE_CODE:-QR_CODE}
+      IMAGE_SIZE: ${IMAGE_SIZE:-200}
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
